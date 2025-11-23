@@ -1,18 +1,18 @@
-import fs, { PathLike } from 'fs';
-import { Config } from './config/app';
-import { CONTAINER_DEFAULT_PHP_VERSION } from './config/php';
-import { PHPUnitTool } from './tools/phpunit';
-import { InfectionTool } from './tools/infection';
-import { PhpCodeSnifferTool } from './tools/codesniffer';
-import { PsalmTool } from './tools/psalm';
-import { ComposerRequireCheckerTool } from './tools/composerRequireChecker';
-import { ComposerDependencyAnalyser } from './tools/composerDependencyAnalyser';
-import { PhpBenchTool } from './tools/phpbench';
-import { CodeceptionTool } from './tools/codeception';
-import { PhpCsFixerTool } from './tools/phpCsFixer';
-import { PHPStanTool } from './tools/phpstan';
-import { ToolExecutionType } from './enum/toolExecutionType';
-import { ToolType } from './enum/toolType';
+import fs, {PathLike} from 'fs';
+import {Config} from './config/app';
+import {CONTAINER_DEFAULT_PHP_VERSION} from './config/php';
+import {PHPUnitTool} from './tools/phpunit';
+import {InfectionTool} from './tools/infection';
+import {PhpCodeSnifferTool} from './tools/codesniffer';
+import {PsalmTool} from './tools/psalm';
+import {ComposerRequireCheckerTool} from './tools/composerRequireChecker';
+import {ComposerDependencyAnalyser} from './tools/composerDependencyAnalyser';
+import {PhpBenchTool} from './tools/phpbench';
+import {CodeceptionTool} from './tools/codeception';
+import {PhpCsFixerTool} from './tools/phpCsFixer';
+import {PHPStanTool} from './tools/phpstan';
+import {ToolExecutionType} from './enum/toolExecutionType';
+import {ToolType} from './enum/toolType';
 
 export type Tool = {
     executionType: ToolExecutionType,
@@ -37,44 +37,44 @@ function backwardCompatibilityCheckTool(config: Config): ToolRunningContainerDef
     }
 
     return {
-        executionType: ToolExecutionType.STATIC,
-        name: 'Backward Compatibility Check',
-        command: `roave-backward-compatibility-check --from=${config.baseReference} --install-development-dependencies`,
-        filesToCheck: ['composer.json'],
-        toolType: ToolType.CODE_CHECK,
-        php: CONTAINER_DEFAULT_PHP_VERSION,
+        executionType : ToolExecutionType.STATIC,
+        name          : 'Backward Compatibility Check',
+        command       : `roave-backward-compatibility-check --from=${ config.baseReference } --install-development-dependencies`,
+        filesToCheck  : [ 'composer.json' ],
+        toolType      : ToolType.CODE_CHECK,
+        php           : CONTAINER_DEFAULT_PHP_VERSION,
     } as ToolRunningContainerDefaultPhpVersion;
 }
 
 export default function createTools(config: Config): Array<Tool> {
     const tools = [
         {
-            executionType: ToolExecutionType.STATIC,
-            name: 'Documentation Linting',
-            command: "markdownlint 'doc/book/**/*.md'",
-            filesToCheck: ['doc/book/'],
-            toolType: ToolType.LINTER,
+            executionType : ToolExecutionType.STATIC,
+            name          : 'Documentation Linting',
+            command       : "markdownlint 'doc/book/**/*.md'",
+            filesToCheck  : [ 'doc/book/' ],
+            toolType      : ToolType.LINTER,
         },
         {
-            executionType: ToolExecutionType.STATIC,
-            name: 'Documentation Linting',
-            command: "markdownlint 'docs/book/**/*.md'",
-            filesToCheck: ['docs/book/'],
-            toolType: ToolType.LINTER,
+            executionType : ToolExecutionType.STATIC,
+            name          : 'Documentation Linting',
+            command       : "markdownlint 'docs/book/**/*.md'",
+            filesToCheck  : [ 'docs/book/' ],
+            toolType      : ToolType.LINTER,
         },
         {
-            executionType: ToolExecutionType.STATIC,
-            name: 'MkDocs Linting',
-            command: 'yamllint -d relaxed --no-warnings mkdocs.yml',
-            filesToCheck: ['mkdocs.yml'],
-            toolType: ToolType.LINTER,
+            executionType : ToolExecutionType.STATIC,
+            name          : 'MkDocs Linting',
+            command       : 'yamllint -d relaxed --no-warnings mkdocs.yml',
+            filesToCheck  : [ 'mkdocs.yml' ],
+            toolType      : ToolType.LINTER,
         },
         {
-            executionType: ToolExecutionType.STATIC,
-            name: 'README Linting',
-            command: 'markdownlint README.md',
-            filesToCheck: ['README.md'],
-            toolType: ToolType.LINTER,
+            executionType : ToolExecutionType.STATIC,
+            name          : 'README Linting',
+            command       : 'markdownlint README.md',
+            filesToCheck  : [ 'README.md' ],
+            toolType      : ToolType.LINTER,
         },
         PHPUnitTool,
         InfectionTool,
@@ -102,7 +102,7 @@ export default function createTools(config: Config): Array<Tool> {
 export function removeNonExistentFilesToCheck(tool: Tool): Tool {
     return {
         ...tool,
-        filesToCheck: tool.filesToCheck.filter((file) => fs.existsSync(file))
+        filesToCheck : tool.filesToCheck.filter((file) => fs.existsSync(file))
     };
 }
 
